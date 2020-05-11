@@ -2,7 +2,13 @@ import mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-export const ServerSchema = new Schema({
+export interface IServer extends mongoose.Document {
+    Name: string;
+    Rooms: mongoose.Types.Array<mongoose.Types.ObjectId>;
+    Users: mongoose.Types.Array<string>;
+}  
+
+const ServerSchema: mongoose.Schema = new Schema({
     Name: {
         type: String,
     },
@@ -17,3 +23,5 @@ export const ServerSchema = new Schema({
         }
     }]
 });
+
+export default mongoose.model<IServer>("Server",ServerSchema);

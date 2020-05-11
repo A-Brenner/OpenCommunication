@@ -1,7 +1,11 @@
 import express from 'express';
-
+import cors from 'cors';
 /*AppRouter represents a route on the server.  AppRouters can be strung
         together to create a heirarchy */
+        var originsWhitelist = [
+            'http://localhost:4200',      //this is my front-end url for development
+             'http://www.myproductionurl.com'
+          ];
 export abstract class AppRouter{
     protected router: express.Router;
 
@@ -11,7 +15,8 @@ export abstract class AppRouter{
         return this.router;
     }
     constructor(){
-        this.router=express.Router();    
+        this.router=express.Router();   
+        this.router.use(cors());
         this.setupRoutes();       
     }
 
