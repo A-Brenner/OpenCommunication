@@ -29,7 +29,7 @@ var SecurityController = /** @class */ (function () {
     //expects username and password fields to be set in the body of the post request
     //sends a success message to caller on success, or a failure status code on failure
     SecurityController.prototype.register = function (req, res, next) {
-        var encryptedPassword = this.encryptString(req.body.password);
+        var encryptedPassword = encryptString(req.body.password);
         userModel_1.default.findOne({ username: req.body.username }, function (err, userDoc) {
             if (err)
                 res.sendStatus(500).end();
@@ -64,7 +64,7 @@ var SecurityController = /** @class */ (function () {
     SecurityController.prototype.changePwd = function (req, res, next) {
         if (!req.body.password)
             res.status(400).send({ fn: 'changePwd', status: 'failure' }).end();
-        var encryptedPassword = this.encryptString(req.body.password);
+        var encryptedPassword = encryptString(req.body.password);
         userModel_1.default.findOneAndUpdate({ username: req.body.username }, { password: encryptedPassword }, function (err, user) {
             if (err || user == null) {
                 return res.sendStatus(500).end();
@@ -79,16 +79,17 @@ var SecurityController = /** @class */ (function () {
             });
         });
     };
-    SecurityController.prototype.encryptString = function (password) {
-        try {
-            var salt = bcrypt_1.default.genSaltSync(10);
-            return bcrypt_1.default.hashSync(password, salt);
-        }
-        catch (err) {
-            return "*";
-        }
-    };
     return SecurityController;
 }());
 exports.SecurityController = SecurityController;
+function encryptString(password) {
+    try {
+        var salt = bcrypt_1.default.genSaltSync(10);
+        return bcrypt_1.default.hashSync(password, salt);
+    }
+    catch (err) {
+        return "*";
+    }
+}
+exports.encryptString = encryptString;
 //# sourceMappingURL=securityController.js.map

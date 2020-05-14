@@ -16,6 +16,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var AppRouter_1 = require("./common/AppRouter");
 var securityrouter_1 = require("./security/securityrouter");
 var projectsRouter_1 = require("./projects/projectsRouter");
+var roomRouter_1 = require("./room/roomRouter");
 //root router for the API
 var MainRouter = /** @class */ (function (_super) {
     __extends(MainRouter, _super);
@@ -25,6 +26,7 @@ var MainRouter = /** @class */ (function (_super) {
     //adds the child routers to various paths to form the overall API. 
     MainRouter.prototype.setupRoutes = function () {
         this.addRouter('/security', new securityrouter_1.SecurityRouter());
+        this.addRouter('/room', new roomRouter_1.RoomRouter());
         this.addRouter('/projects', new projectsRouter_1.ProjectsRouter());
     };
     return MainRouter;

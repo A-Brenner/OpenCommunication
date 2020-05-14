@@ -24,15 +24,15 @@ var RoomRouter = /** @class */ (function (_super) {
     }
     //sets up the routes within this module shows an example of a route that requires authorization, and one that does not
     RoomRouter.prototype.setupRoutes = function () {
-        this.router.post("/room/create", [securityMiddleware_1.SecurityMiddleware.RequireAuth], RoomRouter.roomController.CreateRoom);
-        this.router.post("/room/sendchat", [securityMiddleware_1.SecurityMiddleware.RequireAuth], RoomRouter.roomController.SendRoomChat);
-        this.router.get("/room/refreshchat", [securityMiddleware_1.SecurityMiddleware.RequireAuth], RoomRouter.roomController.RefreshRoomChat);
-        this.router.post("/room/joinvoice", [securityMiddleware_1.SecurityMiddleware.RequireAuth], RoomRouter.roomController.JoinRoomVoice);
-        this.router.get("/room/refreshvoice", [securityMiddleware_1.SecurityMiddleware.RequireAuth], RoomRouter.roomController.RefreshRoomVoice);
-        this.router.post("/room/joinvideo", [securityMiddleware_1.SecurityMiddleware.RequireAuth], RoomRouter.roomController.JoinRoomVideo);
-        this.router.get("/room/refreshvideo", [securityMiddleware_1.SecurityMiddleware.RequireAuth], RoomRouter.roomController.RefreshRoomVideo);
+        var roomController = new roomController_1.RoomController();
+        this.router.post("/room/create", [securityMiddleware_1.SecurityMiddleware.RequireAuth], roomController.CreateRoom);
+        this.router.post("/room/sendchat", [securityMiddleware_1.SecurityMiddleware.RequireAuth], roomController.SendRoomChat);
+        this.router.get("/room/refreshchat", [securityMiddleware_1.SecurityMiddleware.RequireAuth], roomController.RefreshRoomChat);
+        this.router.post("/room/joinvoice", [securityMiddleware_1.SecurityMiddleware.RequireAuth], roomController.JoinRoomVoice);
+        this.router.get("/room/refreshvoice", [securityMiddleware_1.SecurityMiddleware.RequireAuth], roomController.RefreshRoomVoice);
+        this.router.post("/room/joinvideo", [securityMiddleware_1.SecurityMiddleware.RequireAuth], roomController.JoinRoomVideo);
+        this.router.get("/room/refreshvideo", [securityMiddleware_1.SecurityMiddleware.RequireAuth], roomController.RefreshRoomVideo);
     };
-    RoomRouter.roomController = new roomController_1.RoomController();
     return RoomRouter;
 }(AppRouter_1.AppRouter));
 exports.RoomRouter = RoomRouter;
