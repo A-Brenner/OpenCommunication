@@ -27,8 +27,8 @@ export class SecurityController {
     //register - POST
     //expects username and password fields to be set in the body of the post request
     //sends a success message to caller on success, or a failure status code on failure
-    register(req: express.Request, res: express.Response, next: express.NextFunction) {
-        var encryptedPassword = this.encryptString(req.body.password);
+    public register(req: express.Request, res: express.Response, next: express.NextFunction) {
+        var encryptedPassword = encryptString(req.body.password);
         User.findOne({ username: req.body.username }, function (err, userDoc) {
             if (err) res.sendStatus(500).end();
             if (userDoc) return res.status(400).send({ fn: 'register', status: 'failure', data: 'User Exists' }).end();
@@ -50,7 +50,7 @@ export class SecurityController {
     //this code actually does nothing, but if it is secured at the route level, it will return the username for the token that
     //was returned.  This is used to verify a token by a client application
     //returns the users username on success
-    authorize(req: express.Request, res: express.Response, next: express.NextFunction) {
+    public authorize(req: express.Request, res: express.Response, next: express.NextFunction) {
         //validate that req.authUser exists, if so, return the user's username.
         console.log(req.body.authUser.username);
         res.send({ fn: 'authorize', status: 'success', data: { username: req.body.authUser.username } }).end();
@@ -58,9 +58,9 @@ export class SecurityController {
     //changePwd - POST
     //chages the password of the user represented in the token.  Expects password in the body of the POST
     //returns a success messager to the client on success, a failure status code on failure
-    changePwd(req: express.Request, res: express.Response, next: express.NextFunction) {
+    public changePwd(req: express.Request, res: express.Response, next: express.NextFunction) {
         if (!req.body.password) res.status(400).send({ fn: 'changePwd', status: 'failure' }).end();
-        var encryptedPassword = this.encryptString(req.body.password);
+        var encryptedPassword = encryptString(req.body.password);
         User.findOneAndUpdate({ username: req.body.username }, { password: encryptedPassword }, function (err, user) {
             if (err || user == null) {
                 return res.sendStatus(500).end();
@@ -75,7 +75,8 @@ export class SecurityController {
             });
         });
     }
-    encryptString(password:string):string{
+}
+    export function encryptString(password:string):string{
             try {
                 var salt : string  = bcrypt.genSaltSync(10);
                 return bcrypt.hashSync(password, salt);
@@ -83,4 +84,3 @@ export class SecurityController {
                 return "*";
             }
     }
-}
