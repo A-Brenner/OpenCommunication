@@ -55,6 +55,13 @@ export abstract class NodeApplication {
     //startServer: Called to start the node.js server
     startServer(): void {
         mongoose.connect('mongodb://127.0.0.1:27017/opencommunicator');
+        mongoose.connection.once('open', _ => {
+            console.log('Database connected:', 'mongodb://127.0.0.1:27017/opencommunicator')
+          })
+          
+          mongoose.connection.on('error', err => {
+            console.error('connection error:', err)
+          })
         this.app.listen(this.port, ()=>this.OnSetupComplete(this.port));
     }
 }
