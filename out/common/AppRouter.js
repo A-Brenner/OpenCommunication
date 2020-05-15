@@ -4,11 +4,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var express_1 = __importDefault(require("express"));
+var cors_1 = __importDefault(require("cors"));
 /*AppRouter represents a route on the server.  AppRouters can be strung
         together to create a heirarchy */
+var originsWhitelist = [
+    'http://localhost:4200',
+    'http://www.myproductionurl.com'
+];
 var AppRouter = /** @class */ (function () {
     function AppRouter() {
         this.router = express_1.default.Router();
+        this.router.use(cors_1.default());
         this.setupRoutes();
     }
     Object.defineProperty(AppRouter.prototype, "expressRouter", {

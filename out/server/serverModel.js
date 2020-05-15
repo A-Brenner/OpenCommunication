@@ -2,7 +2,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 var mongoose = require("mongoose");
 var Schema = mongoose.Schema;
-exports.ServerSchema = new Schema({
+var ServerSchema = new Schema({
     Name: {
         type: String,
     },
@@ -17,4 +17,5 @@ exports.ServerSchema = new Schema({
             }
         }]
 });
+exports.default = mongoose.model("Server", ServerSchema);
 //# sourceMappingURL=serverModel.js.map
