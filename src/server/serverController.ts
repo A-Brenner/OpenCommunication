@@ -47,9 +47,9 @@ export class ServerController {
             });
         });
     }
-    public RefreshServer(req: express.Request, res: express.Response): void {
+    public RefreshUsers(req: express.Request, res: express.Response): void {
         //TODO: return a list of all users and rooms in a server
-          Server.findOne({ Name: req.body.Name }, "Users",function (err, server) {
+        Server.findOne({ Name: req.body.Name }, "Users",function (err, server) {
             if (err || server == null) {
                 return res.sendStatus(500).end();
             }
@@ -58,9 +58,25 @@ export class ServerController {
                     return res.sendStatus(500).end();
                 }
                 else {
-                    return res.send({ fn: 'Friends List retrieved', status: 'success' });
+                    return res.send({ fn: 'Friends List retrieved', status: 'success', server});
                 }
             });
-        });  
+        });
+    }
+    public RefreshRooms(req: express.Request, res: express.Response): void {
+        //TODO: return a list of all users and rooms in a server
+        Server.findOne({ Name: req.body.Name }, "Rooms",function (err, server) {
+            if (err || server == null) {
+                return res.sendStatus(500).end();
+            }
+            server.save(function (err) {
+                if (err) {
+                    return res.sendStatus(500).end();
+                }
+                else {
+                    return res.send({ fn: 'Friends List retrieved', status: 'success', server});
+                }
+            });
+        });
     }
 }

@@ -22,4 +22,4 @@ const FriendsSchema: mongoose.Schema = new Schema({
 });
 
 
-export default mongoose.model<Friends>("Message", FriendsSchema);
+export default mongoose.model<Friends>("Friends", FriendsSchema);

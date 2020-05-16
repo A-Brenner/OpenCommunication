@@ -3,7 +3,7 @@ import {Friends} from './friendsModel';
 
 const Schema = mongoose.Schema;
 
-export interface Messages extends mongoose.Document{
+export interface Message extends mongoose.Document{
     username: string;
     friendrequests: mongoose.Types.Array<string>;
     friends: Friends['_id'];
@@ -27,4 +27,4 @@ const MessageSchema: mongoose.Schema = new Schema({
 });
 
 
-export default mongoose.model<Messages>("Messages", MessageSchema);
+export default mongoose.model<Message>("Message", MessageSchema);

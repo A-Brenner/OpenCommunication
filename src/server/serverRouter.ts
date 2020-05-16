@@ -13,6 +13,7 @@ export class serverRouter extends AppRouter{
         this.router.post("/create",serverController.CreateServer);
         this.router.post("/join", serverController.JoinServer);
         this.router.delete("/leave", serverController.LeaveServer);
-        this.router.get("/refresh",serverController.RefreshServer);
+        this.router.get("/refreshusers",serverController.RefreshUsers);
+        this.router.get("/refreshrooms",serverController.RefreshRooms);
     }    
 }
