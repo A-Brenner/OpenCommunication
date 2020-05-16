@@ -5,7 +5,7 @@ import mongoose = require("mongoose");
 export class ServerController {
     public CreateServer(req: express.Request, res: express.Response): void {
         //TODO: create a entry in the server table
-        let newServer = new Server(req.body);
+        var newServer = new Server({ Name: req.body.Name , Users: {username: req.body.username}, Rooms: {Id: req.body.Id}});
         newServer.save((err, server) => {
             if(err){
                 res.send(err);
@@ -15,8 +15,8 @@ export class ServerController {
     }
     public JoinServer(req: express.Request, res: express.Response): void {
         //TODO: add a user to a server
-        const serverId = req.query.serverId;
-        Server.findOneAndUpdate({ _id: serverId }, {$push:{ Users: req.body.username}}, function (err, server) {
+        const serverId = req.body.serverId;
+        Server.findOneAndUpdate({ _id: serverId }, {$push:{ Users: {username: req.body.username}}}, function (err, server) {
             if (err || server == null) {
                 return res.sendStatus(500).end();
             }
@@ -32,8 +32,8 @@ export class ServerController {
     }
     public LeaveServer(req: express.Request, res: express.Response): void {
         //TODO: remove a user to a server
-        const serverId = req.query.serverId;
-        Server.findOneAndUpdate({ _id: serverId }, {$pull:{ Users: req.body.username}}, function (err, server) {
+        const serverId = req.body.serverId;
+        Server.findOneAndUpdate({ _id: serverId }, {$pull:{ Users: {username :req.body.username}}}, function (err, server) {
             if (err || server == null) {
                 return res.sendStatus(500).end();
             }
@@ -49,7 +49,7 @@ export class ServerController {
     }
     public RefreshServer(req: express.Request, res: express.Response): void {
         //TODO: return a list of all users and rooms in a server
-        Server.findOne({ Name: req.body.Name }, "Users",function (err, server) {
+          Server.findOne({ Name: req.body.Name }, "Users",function (err, server) {
             if (err || server == null) {
                 return res.sendStatus(500).end();
             }
@@ -61,6 +61,6 @@ export class ServerController {
                     return res.send({ fn: 'Friends List retrieved', status: 'success' });
                 }
             });
-        });
+        });  
     }
 }

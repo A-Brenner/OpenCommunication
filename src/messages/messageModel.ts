@@ -2,14 +2,11 @@ import mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
 
-export interface Friend {
-    username: string;
-    messages: Message;
-}
-
 export interface Message extends mongoose.Document{
-    time: Date;
-    content: string;
+    username: string;
+    friendrequests: mongoose.Types.Array<string>;
+    friends: mongoose.Types.Array<String>;
+    
 }
 
 const MessageSchema: mongoose.Schema = new Schema({
