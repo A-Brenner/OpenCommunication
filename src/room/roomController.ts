@@ -16,7 +16,7 @@ export class RoomController {
     public SendRoomChat(req: express.Request, res: express.Response): void {
         //TODO: add a message to the RoomMessage table and ping users to trigger refreshroomchat
         const roomChatId = req.query.roomChatId;
-        Room.findOneAndUpdate({ _id: roomChatId }, { $push: { messages: req.body.content } }, function (err, room) {
+        Room.findOneAndUpdate({ _id: roomChatId }, { $push: { messages: {content: req.body.content }}}, function (err, room) {
             if (err || room == null) {
                 return res.sendStatus(500).end();
             }
@@ -34,7 +34,7 @@ export class RoomController {
 
     public RefreshRoomChat(req: express.Request, res: express.Response): void {
         //TODO: return list of of every message after the last one.
-        Room.findOne({ messages: req.body.content }, "Messages", function (err, room) {
+        Room.findOne({ messages: {content: req.body.content }}, "Messages", function (err, room) {
             if (err || room == null) {
                 return res.sendStatus(500).end();
             }
@@ -52,7 +52,7 @@ export class RoomController {
     public JoinRoomVoice(req: express.Request, res: express.Response): void {
         //TODO: return list of who is in the voice room and trigger peers to connect to you
         const roomVoiceId = req.query.roomVoiceId;
-        Room.findOneAndUpdate({ _id: roomVoiceId }, { $push: { users: req.body.username } }, function (err, room) {
+        Room.findOneAndUpdate({ _id: roomVoiceId }, { $push: { users: {username: req.body.username }} }, function (err, room) {
             if (err || room == null) {
                 return res.sendStatus(500).end();
             }
@@ -88,7 +88,7 @@ export class RoomController {
     public JoinRoomVideo(req: express.Request, res: express.Response): void {
         //TODO: return list of who is in the video room and trigger peers to connect to you
         const roomVideoId = req.query.roomVideoId;
-        Room.findOneAndUpdate({ _id: roomVideoId }, { $push: { users: req.body.username } }, function (err, room) {
+        Room.findOneAndUpdate({ _id: roomVideoId }, { $push: { users: {username: req.body.username }} }, function (err, room) {
             if (err || room == null) {
                 return res.sendStatus(500).end();
             }
