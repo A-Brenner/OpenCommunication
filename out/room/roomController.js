@@ -36,7 +36,7 @@ var RoomController = /** @class */ (function () {
     };
     RoomController.prototype.RefreshRoomChat = function (req, res) {
         //TODO: return list of of every message after the last one.
-        roomModel_1.default.findOne({ name: req.body.name }, "Messages", function (err, room) {
+        roomModel_1.default.findOne({ messages: req.body.content }, "Messages", function (err, room) {
             if (err || room == null) {
                 return res.sendStatus(500).end();
             }
@@ -78,7 +78,7 @@ var RoomController = /** @class */ (function () {
                     return res.sendStatus(500).end();
                 }
                 else {
-                    return res.send({ fn: 'Messages retrieved', status: 'success' });
+                    return res.send({ fn: 'Users retrieved', status: 'success' });
                 }
             });
         });
@@ -111,7 +111,7 @@ var RoomController = /** @class */ (function () {
                     return res.sendStatus(500).end();
                 }
                 else {
-                    return res.send({ fn: 'Messages retrieved', status: 'success' });
+                    return res.send({ fn: 'Users retrieved', status: 'success' });
                 }
             });
         });

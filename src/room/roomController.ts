@@ -34,7 +34,7 @@ export class RoomController {
 
     public RefreshRoomChat(req: express.Request, res: express.Response): void {
         //TODO: return list of of every message after the last one.
-        Room.findOne({ name: req.body.name }, "Messages", function (err, room) {
+        Room.findOne({ messages: req.body.content }, "Messages", function (err, room) {
             if (err || room == null) {
                 return res.sendStatus(500).end();
             }
@@ -78,7 +78,7 @@ export class RoomController {
                     return res.sendStatus(500).end();
                 }
                 else {
-                    return res.send({ fn: 'Messages retrieved', status: 'success'});
+                    return res.send({ fn: 'Users retrieved', status: 'success'});
                 }
             });
         });
@@ -114,7 +114,7 @@ export class RoomController {
                     return res.sendStatus(500).end();
                 }
                 else {
-                    return res.send({ fn: 'Messages retrieved', status: 'success' });
+                    return res.send({ fn: 'Users retrieved', status: 'success' });
                 }
             });
         });
