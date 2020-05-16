@@ -1,10 +1,11 @@
 import express from "express";
 import Room from "./roomModel";
+import mongoose = require("mongoose");
 
 export class RoomController {
     //TOTO: add an entry to the rooms table
     public CreateRoom(req: express.Request, res: express.Response): void {
-        let newRoom = new Room(req.body);
+        let newRoom = new Room({name: req.body.name, type: req.body.type, messages: {userFrom: req.body.userFrom, content: req.body.content}, users: {username: req.body.username}});
         newRoom.save((err, room) => {
             if (err) {
                 res.send(err);
@@ -34,7 +35,7 @@ export class RoomController {
 
     public RefreshRoomChat(req: express.Request, res: express.Response): void {
         //TODO: return list of of every message after the last one.
-        Room.findOne({ messages: {content: req.body.content }}, "Messages", function (err, room) {
+        Room.findOne({ messages: {userFrom: req.body.userFrom, content: req.body.content }}, "messages", function (err, room) {
             if (err || room == null) {
                 return res.sendStatus(500).end();
             }
