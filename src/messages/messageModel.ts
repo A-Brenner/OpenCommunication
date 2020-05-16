@@ -1,13 +1,14 @@
 import mongoose = require("mongoose");
+import {Friends} from './friendsModel';
 
 const Schema = mongoose.Schema;
 
-export interface Message extends mongoose.Document{
+export interface Messages extends mongoose.Document{
     username: string;
     friendrequests: mongoose.Types.Array<string>;
-    friends: mongoose.Types.Array<String>;
-    
+    friends: Friends['_id'];
 }
+
 
 const MessageSchema: mongoose.Schema = new Schema({
     username: {
@@ -21,22 +22,9 @@ const MessageSchema: mongoose.Schema = new Schema({
         }
     }],
     friends: [{
-        username: {
-            type: String,
-            required: "username is required"
-        },
-        messages: [{
-            time: {
-                type: Date,
-                required: "Date is required"
-            },
-            content: {
-                type: String,
-                required: "Content is required"
-            }
-        }]
+        type: mongoose.Types.ObjectId
     }]
 });
 
 
-export default mongoose.model<Message>("Message", MessageSchema);
+export default mongoose.model<Messages>("Messages", MessageSchema);
