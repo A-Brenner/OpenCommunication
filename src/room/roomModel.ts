@@ -2,7 +2,14 @@ import mongoose = require("mongoose")
 
 const Schema = mongoose.Schema;
 
-export const RoomSchema = new Schema({
+export interface IRoom extends mongoose.Document {
+
+}
+const RoomSchema = new Schema({
+    server: {
+        type: String,
+        required: 'Server is required'
+    },
     name: {
         type: String,
         required: 'Name is required'
@@ -32,3 +39,6 @@ export const RoomSchema = new Schema({
         }
     }]
 })
+
+
+export default mongoose.model<IRoom>("Server",RoomSchema);
