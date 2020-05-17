@@ -24,12 +24,6 @@ const RoomSchema = new Schema({
     messages: [{
         type: mongoose.Types.ObjectId
     }],
-    users: [{
-        username: {
-            type: String,
-            required: 'Username is required'
-        }
-    }]
 })
 
 

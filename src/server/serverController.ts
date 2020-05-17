@@ -2,16 +2,28 @@
 import express from "express";
 import Server from './serverModel';
 import mongoose = require("mongoose");
+import Room from "../room/roomModel";
 
 export class ServerController {
     public CreateServer(req: express.Request, res: express.Response): void {
         //TODO: create a entry in the server table
-        var newServer = new Server({ Name: req.body.Name , Users: {username: req.body.username}, Rooms: {Id: req.body.Id}});
+        var newServer = new Server({ Name: req.body.Name , Users: {username: req.body.username}});
+        var generalroom = new Room({server: newServer.Name, name: "General", type: "Chat"});
+        newServer.Rooms.push(generalroom._id);
         newServer.save((err, server) => {
             if(err){
                 res.send(err);
             }    
-            res.json(server);
+            else{
+                generalroom.save((err,room) => {
+                    if(err){
+                        res.send(err);
+                    }    
+                    else{
+                        res.send({ fn: 'Created Server', status: 'success' })
+                    }
+                });
+            }
         });
     }
     public JoinServer(req: express.Request, res: express.Response): void {
@@ -78,6 +90,16 @@ export class ServerController {
                     return res.send({ fn: 'Friends List retrieved', status: 'success', server});
                 }
             });
+        });
+    }
+    public ListServers(req: express.Request, res: express.Response): void {
+        Server.find({ Users : req.body.userid},function(err, servers){
+            if (err || servers == null) {
+                return res.sendStatus(500).end();
+            }
+            else{
+                return res.send(JSON.stringify(servers));
+            }
         });
     }
 }

@@ -15,5 +15,6 @@ export class serverRouter extends AppRouter{
         this.router.delete("/leave", serverController.LeaveServer);
         this.router.get("/refreshusers",serverController.RefreshUsers);
         this.router.get("/refreshrooms",serverController.RefreshRooms);
+        this.router.get("/list",serverController.ListServers);
     }    
 }
