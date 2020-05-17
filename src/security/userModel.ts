@@ -10,7 +10,7 @@ export interface IUser extends mongoose.Document {
     username: string;
     password:string;
     friendrequests: mongoose.Types.Array<string>;
-    friends: Friends['username'];
+    friends: Friends['_id'];
     validatePassword(password: string): boolean;
     encryptString(password: string):string;
 }  
@@ -32,9 +32,7 @@ const UserSchema: mongoose.Schema = new Schema({
         }
     }],
     friends: [{
-        username: {
-            type: String 
-        }
+        types: mongoose.Types.ObjectId
     }]
 });
 

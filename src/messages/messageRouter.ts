@@ -17,8 +17,9 @@ export class MessageRouter extends AppRouter {
       this.router.post("/acceptFriend",messageController.AcceptFriend);
       this.router.post("/addFriend",messageController.AddFriend);
       this.router.delete("/declineFriend", [SecurityMiddleware.RequireAuth],messageController.DeclineFriend);
-      this.router.delete("/removeFriend", [SecurityMiddleware.RequireAuth],messageController.RemoveFriend);
-      this.router.get("/friendRefresh", [SecurityMiddleware.RequireAuth],messageController.RefreshFriends);
-      this.router.get("/chatRefresh", [SecurityMiddleware.RequireAuth],messageController.RefreshFriendChat);
+      this.router.delete("/removeFriend", messageController.RemoveFriend);
+      this.router.get("/friendRefresh", messageController.RefreshFriends);
+      this.router.get("/chatRefresh",messageController.RefreshFriendChat);
+      this.router.get("/sendFriendChat",messageController.SendFriendChat);
     }
 }
