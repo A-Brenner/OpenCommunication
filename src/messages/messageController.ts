@@ -3,6 +3,7 @@ import { Config } from '../config';
 import User from '../security/userModel';
 import Friends from '../messages/friendsModel';
 import mongoose = require("mongoose");
+import Chat from "./chatModel"
 
 
 export class MessageController {

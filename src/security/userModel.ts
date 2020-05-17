@@ -2,6 +2,7 @@ import bcrypt from 'bcrypt';
 import {Friends} from '../messages/friendsModel';
 import mongoose = require("mongoose");
 
+
 const Schema = mongoose.Schema;
 
 
