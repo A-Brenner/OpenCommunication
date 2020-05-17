@@ -51,21 +51,21 @@ export class MessageController {
     }
     public AddFriend(req: express.Request, res: express.Response): void {
         //TODO: add an entry in the friends table and ping Accounts to trigger refreshfriends
-        User.findOneAndUpdate({ username: req.body.username }, {$push:{ friendrequests: {username: req.query.username}}}, function (err, server) {
+        User.findOneAndUpdate({ username: req.body.username }, { $push: { friendrequests: { username: req.query.username } } }, function (err, server) {
             if (err || server == null) {
-                return ;
+                return;
             }
             server.save(function (err) {
                 if (err) {
-                    return ;
+                    return;
                 }
                 else {
-                    return ;
+                    return;
                 }
             });
         });
         const userId = req.query.userId;
-        User.findOneAndUpdate({ _id: userId}, {$push:{ friendrequests: {username: req.body.username}}}, function (err, server) {
+        User.findOneAndUpdate({ _id: userId }, { $push: { friendrequests: { username: req.body.username } } }, function (err, server) {
             if (err || server == null) {
                 return res.sendStatus(500).end();
             }
@@ -80,21 +80,21 @@ export class MessageController {
         });
     }
     public DeclineFriend(req: express.Request, res: express.Response): void {
-        User.findOneAndUpdate({ username: req.body.username }, {$pull:{ friendrequests: {username: req.query.username}}}, function (err, server) {
+        User.findOneAndUpdate({ username: req.body.username }, { $pull: { friendrequests: { username: req.query.username } } }, function (err, server) {
             if (err || server == null) {
-                return ;
+                return;
             }
             server.save(function (err) {
                 if (err) {
-                    return ;
+                    return;
                 }
                 else {
-                    return ;
+                    return;
                 }
             });
         });
         const userId = req.query.userId;
-        User.findOneAndUpdate({ _id: userId}, {$pull:{ friendrequests: {username: req.body.username}}}, function (err, server) {
+        User.findOneAndUpdate({ _id: userId }, { $pull: { friendrequests: { username: req.body.username } } }, function (err, server) {
             if (err || server == null) {
                 return res.sendStatus(500).end();
             }
@@ -110,46 +110,46 @@ export class MessageController {
     }
     public AcceptFriend(req: express.Request, res: express.Response): void {
         //TODO: add an entry in the friends table and ping Accounts to trigger refreshfriends
-        User.findOneAndUpdate({ username: req.body.username }, {$pull:{ friendrequests: {username: req.query.username}}}, function (err, server) {
+        User.findOneAndUpdate({ username: req.body.username }, { $pull: { friendrequests: { username: req.query.username } } }, function (err, server) {
             if (err || server == null) {
-                return ;
+                return;
             }
             server.save(function (err) {
                 if (err) {
-                    return ;
+                    return;
                 }
                 else {
-                    return ;
+                    return;
                 }
             });
         });
         const userId = req.query.userId;
-        User.findOneAndUpdate({ _id: userId}, {$pull:{ friendrequests: {username: req.body.username}}}, function (err, server) {
+        User.findOneAndUpdate({ _id: userId }, { $pull: { friendrequests: { username: req.body.username } } }, function (err, server) {
             if (err || server == null) {
-                return ;
+                return;
             }
             server.save(function (err) {
                 if (err) {
-                    return ;
+                    return;
                 }
                 else {
-                    return ;
+                    return;
                 }
             });
         });
 
-        var Friendrequester = new Friends({ username: req.query.username, _id: userId});
+        var Friendrequester = new Friends({ username: req.query.username, _id: userId });
         var Friendrequestee = new Friends({ username: req.body.username, _id: req.body.userId });
         User.findOneAndUpdate({ username: req.body.username }, {$push: {friends: Friendrequester.id}}, function (err, server) {
             if (err || server == null) {
-                return ;
+                return;
             }
             server.save(function (err) {
                 if (err) {
-                    return ;
+                    return;
                 }
                 else {
-                    return ;
+                    return;
                 }
             });
         });
@@ -170,7 +170,7 @@ export class MessageController {
     public RemoveFriend(req: express.Request, res: express.Response): void {
         //TODO: remove an entry in the friends table and ping Accounts to trigger refreshfriends
         const userId = req.query.userId;
-        User.findOneAndUpdate({ _id: userId}, {$pull:{ friends: req.body.userId}}, function (err, server) {
+        User.findOneAndUpdate({ _id: userId }, { $pull: { friends: req.body.userId } }, function (err, server) {
             if (err || server == null) {
                 return res.sendStatus(500).end();
             }
@@ -185,14 +185,14 @@ export class MessageController {
         });
 /*         User.findOneAndUpdate({ username: req.body.username }, {$pull:{friends: userId}}, function (err, server) {
             if (err || server == null) {
-                return ;
+                return;
             }
             server.save(function (err) {
                 if (err) {
-                    return ;
+                    return;
                 }
                 else {
-                    return ;
+                    return;
                 }
             });
         }); */
