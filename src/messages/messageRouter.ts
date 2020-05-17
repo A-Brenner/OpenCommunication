@@ -14,11 +14,12 @@ export class MessageRouter extends AppRouter {
 
     //sets up the routes within this module shows an example of a route that requires authorization, and one that does not
     setupRoutes(): void {
-      this.router.post("/acceptFriend", [SecurityMiddleware.RequireAuth],MessageRouter.MessageController.AcceptFriend);
-      this.router.post("/addFriend", [SecurityMiddleware.RequireAuth],MessageRouter.MessageController.AddFriend);
-      this.router.delete("/declineFriend", [SecurityMiddleware.RequireAuth],MessageRouter.MessageController.DeclineFriend);
-      this.router.delete("/removeFriend", [SecurityMiddleware.RequireAuth],MessageRouter.MessageController.RemoveFriend);
-      this.router.get("/friendRefresh", [SecurityMiddleware.RequireAuth],MessageRouter.MessageController.RefreshFriends);
-      this.router.get("/chatRefresh", [SecurityMiddleware.RequireAuth],MessageRouter.MessageController.RefreshFriendChat);
+      const messageController: MessageController = new MessageController();
+      this.router.post("/acceptFriend",messageController.AcceptFriend);
+      this.router.post("/addFriend",messageController.AddFriend);
+      this.router.delete("/declineFriend", messageController.DeclineFriend);
+      this.router.delete("/removeFriend", [SecurityMiddleware.RequireAuth],messageController.RemoveFriend);
+      this.router.get("/friendRefresh", [SecurityMiddleware.RequireAuth],messageController.RefreshFriends);
+      this.router.get("/chatRefresh", [SecurityMiddleware.RequireAuth],messageController.RefreshFriendChat);
     }
 }

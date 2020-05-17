@@ -1,4 +1,5 @@
 import bcrypt from 'bcrypt';
+import {Friends} from '../messages/friendsModel';
 import mongoose = require("mongoose");
 
 const Schema = mongoose.Schema;
@@ -7,6 +8,8 @@ const Schema = mongoose.Schema;
 export interface IUser extends mongoose.Document {
     username: string;
     password:string;
+    friendrequests: mongoose.Types.Array<string>;
+    friends: Friends['username'];
     validatePassword(password: string): boolean;
     encryptString(password: string):string;
 }  
@@ -20,7 +23,18 @@ const UserSchema: mongoose.Schema = new Schema({
     password: {
         type: String,
         required: "password is required"
-    }
+    },
+    friendrequests: [{
+        username: {
+            type: String,
+            required: "username is required"
+        }
+    }],
+    friends: [{
+        username: {
+            type: String 
+        }
+    }]
 });
 
 UserSchema.methods.validatePassword = function(password:string): boolean{
