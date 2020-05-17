@@ -2,6 +2,7 @@ import express from "express";
 import { Config } from '../config';
 import User from '../security/userModel';
 import mongoose = require("mongoose");
+import Chat from "./chatModel"
 
 
 export class MessageController {
@@ -12,7 +13,7 @@ export class MessageController {
             if (err || messageDoc == null) {
                 return res.sendStatus(500).end();
             }
-            var message = new Message({ time: Date.now , content: req.body.content});
+            var message = new Chat({ time: Date.now , content: req.body.content});
             message.save(function (err) {
                 if (err) {
                     return res.sendStatus(500).end();
