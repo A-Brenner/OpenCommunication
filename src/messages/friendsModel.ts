@@ -7,13 +7,9 @@ const Schema = mongoose.Schema;
 export interface Friends extends mongoose.Document{
     username: string;
     messages: Chat['_id'];
-    _id: mongoose.Types.ObjectId;
 }
 
 const FriendsSchema: mongoose.Schema = new Schema({
-    _id:{
-        type: mongoose.Types.ObjectId
-    },
     username: {
         type: String,
         required: "username is required"
