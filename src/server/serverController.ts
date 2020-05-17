@@ -8,7 +8,7 @@ export class ServerController {
     public CreateServer(req: express.Request, res: express.Response): void {
         //TODO: create a entry in the server table
         var newServer = new Server({ Name: req.body.Name , Users: {username: req.body.username}});
-        var generalroom = new Room({server: newServer.Name, name: "General", type: "Chat"});
+        var generalroom = new Room({server: newServer._id, name: "General", type: "Chat"});
         newServer.Rooms.push(generalroom._id);
         newServer.save((err, server) => {
             if(err){

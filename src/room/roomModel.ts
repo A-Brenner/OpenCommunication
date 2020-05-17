@@ -3,14 +3,14 @@ import mongoose = require("mongoose")
 const Schema = mongoose.Schema;
 
 export interface IRoom extends mongoose.Document {
-    server:string;
+    server:mongoose.Types.ObjectId;
     name:string;
     type:string;
     messages: Array<mongoose.Types.ObjectId>;
 }
 const RoomSchema = new Schema({
     server: {
-        type: String,
+        type: mongoose.Types.ObjectId,
         required: 'Server is required'
     },
     name: {

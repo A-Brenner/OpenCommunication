@@ -15,9 +15,9 @@ export class RoomController {
 
     public SendRoomChat(req: express.Request, res: express.Response): void {
         //TODO: add a message to the RoomMessage table and ping users to trigger refreshroomchat
-        const roomName = req.body.name
+        const roomId = req.body.roomid
         var message = new Chat({username : req.body.username, time: req.body.time, content: req.body.content });
-        Room.findOneAndUpdate({ name: roomName }, { $push: { messages: message._id } }, function (err, room) {
+        Room.findOneAndUpdate({ _id: roomId }, { $push: { messages: message._id } }, function (err, room) {
             if (err || room == null) {
                 return res.sendStatus(500).end();
             }
@@ -26,8 +26,15 @@ export class RoomController {
                     return res.sendStatus(500).end();
                 }
                 else {
+                    message.save(function (err) {
+                        if (err) {
+                            return res.sendStatus(500).end();
+                        }
+                        else{
                     return res.send({ fn: 'Message Sent', status: 'success' });
-                }
+                        }
+                });
+            }
             });
         });
     }
@@ -36,7 +43,7 @@ export class RoomController {
     public RefreshRoomChat(req: express.Request, res: express.Response): void {
         //TODO: return list of of every message
         var messages: any;
-        Room.findOne({ name: req.body.name }, function (err, room) {
+        Room.findOne({ _id: req.body.roomid }, function (err, room) {
             if (err || room == null) {
                 return res.sendStatus(500).end();
             }
