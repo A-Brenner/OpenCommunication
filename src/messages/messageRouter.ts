@@ -20,6 +20,6 @@ export class MessageRouter extends AppRouter {
       this.router.delete("/removeFriend", messageController.RemoveFriend);
       this.router.get("/friendRefresh", messageController.RefreshFriends);
       this.router.get("/chatRefresh",messageController.RefreshFriendChat);
-      this.router.get("/sendFriendChat",messageController.SendFriendChat);
+      this.router.post("/sendFriendChat",messageController.SendFriendChat);
     }
 }

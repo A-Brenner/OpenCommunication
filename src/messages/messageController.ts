@@ -10,8 +10,8 @@ export class MessageController {
 
     public SendFriendChat(req: express.Request, res: express.Response): void {
         //TODO: add a message to the PersonalMessage table and ping Accounts to trigger refreshfriendchat
-        var message = new Chat({username : req.body.username, time: req.body.time, content: req.body.content });
-        Friends.findOneAndUpdate({ username: req.body.from }, { $push: { messages: message._id } }, function (err, friend) {
+        var message = new Chat({username : req.body.from, time: req.body.time, content: req.body.content });
+        Friends.findOneAndUpdate({ _id: req.body.friendId }, { $push: { messages: message._id } }, function (err, friend) {
             if (err || friend == null) {
                 return res.sendStatus(500).end();
             }
@@ -34,19 +34,27 @@ export class MessageController {
     }
     public RefreshFriendChat(req: express.Request, res: express.Response): void {
         //TODO: return list of of every message after the last one. 
-        User.findOne({ username: req.body.username }, "friends",function (err, friends) {
-            if (err || friends == null) {
+        var messages : any[]= [];
+        var _friend : any;
+        Friends.findOne({ _id: req.body.friendid }, function (err, friend) {
+            if (err || friend == null) {
                 return res.sendStatus(500).end();
             }
-            friends.save(function (err) {
-                if (err) {
-                    return res.sendStatus(500).end();
-                }
-                else {
-                    return res.send({ fn: 'Friends List retrieved', status: 'success', friends});
-                }
-            });
-        }); 
+            _friend = friend;
+        }).then(async function (room) {
+            if (_friend.messages.length != 0) {
+                for (var i = 0; i < _friend.messages.length; i++) {
+                    await Chat.findOne({ _id: _friend.messages[i] }, function (err, msg) {
+                        if (err || msg == null) {
+                            return res.sendStatus(500).end();
+                        }
+                        messages.push(msg);       
+                    }      
+                    );
+                }  
+            }
+            return res.json(messages);
+        });
     }
     public AddFriend(req: express.Request, res: express.Response): void {
         //TODO: add an entry in the friends table and ping Accounts to trigger refreshfriends
