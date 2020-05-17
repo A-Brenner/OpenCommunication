@@ -1,6 +1,7 @@
 import express from "express";
 import Room from "./roomModel";
 import Chat from "../messages/chatModel"
+import mongoose = require("mongoose");
 export class RoomController {
     //TOTO: add an entry to the rooms table
     public CreateRoom(req: express.Request, res: express.Response): void {
@@ -16,7 +17,7 @@ export class RoomController {
     public SendRoomChat(req: express.Request, res: express.Response): void {
         //TODO: add a message to the RoomMessage table and ping users to trigger refreshroomchat
         const roomId = req.body.roomid
-        var message = new Chat({username : req.body.username, time: req.body.time, content: req.body.content });
+        var message = new Chat({ username: req.body.username, time: req.body.time, content: req.body.content });
         Room.findOneAndUpdate({ _id: roomId }, { $push: { messages: message._id } }, function (err, room) {
             if (err || room == null) {
                 return res.sendStatus(500).end();
@@ -30,11 +31,11 @@ export class RoomController {
                         if (err) {
                             return res.sendStatus(500).end();
                         }
-                        else{
-                    return res.send({ fn: 'Message Sent', status: 'success' });
+                        else {
+                            return res.send({ fn: 'Message Sent', status: 'success' });
                         }
-                });
-            }
+                    });
+                }
             });
         });
     }
@@ -42,20 +43,28 @@ export class RoomController {
 
     public RefreshRoomChat(req: express.Request, res: express.Response): void {
         //TODO: return list of of every message
-        var messages: any;
+        var messages : any[]= [];
+        var _room : any;
         Room.findOne({ _id: req.body.roomid }, function (err, room) {
             if (err || room == null) {
                 return res.sendStatus(500).end();
             }
-            room.messages.forEach(msg => {
-                Chat.findOne({_id : msg},function (err: any, msg: null) {
-                    if (err || msg != null) {
-                        messages.push(msg);
-                    }
-                });
+            _room = room;
+        }).then(async function (room) {
+            if (_room.messages.length != 0) {
+                for (var i = 0; i < _room.messages.length; i++) {
+                    await Chat.findOne({ _id: _room.messages[i] }, function (err, msg) {
+                        if (err || msg == null) {
+                            return res.sendStatus(500).end();
+                        }
+                        messages.push(msg);       
+                    }      
+                    );
+                }  
+            }
+            return res.json(messages);
         });
-        return res.send(JSON.stringify(messages))
-        });
+        
     }
 
     public JoinRoomVoice(req: express.Request, res: express.Response): void {
@@ -78,16 +87,16 @@ export class RoomController {
 
     public RefreshRoomVoice(req: express.Request, res: express.Response): void {
         //TODO: return list of of everyone in the voice room
-        Room.findOne({ name: req.body.name}, "users", function(err, room) {
-            if(err || room == null) {
+        Room.findOne({ name: req.body.name }, "users", function (err, room) {
+            if (err || room == null) {
                 return res.sendStatus(500).end();
             }
             room.save(function (err) {
-                if(err) {
+                if (err) {
                     return res.sendStatus(500).end();
                 }
                 else {
-                    return res.send({ fn: 'Messages retrieved', status: 'success'});
+                    return res.send({ fn: 'Messages retrieved', status: 'success' });
                 }
             });
         });
