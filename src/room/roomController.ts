@@ -1,6 +1,6 @@
 import express from "express";
 import Room from "./roomModel";
-
+import Chat from "../messages/chatModel"
 export class RoomController {
     //TOTO: add an entry to the rooms table
     public CreateRoom(req: express.Request, res: express.Response): void {
@@ -15,8 +15,9 @@ export class RoomController {
 
     public SendRoomChat(req: express.Request, res: express.Response): void {
         //TODO: add a message to the RoomMessage table and ping users to trigger refreshroomchat
-        const roomChatId = req.query.roomChatId;
-        Room.findOneAndUpdate({ _id: roomChatId }, { $push: { messages: req.body.content } }, function (err, room) {
+        const roomName = req.body.name
+        var message = new Chat({username : req.body.username, time: req.body.time, content: req.body.content });
+        Room.findOneAndUpdate({ name: roomName }, { $push: { messages: message._id } }, function (err, room) {
             if (err || room == null) {
                 return res.sendStatus(500).end();
             }
@@ -33,19 +34,20 @@ export class RoomController {
 
 
     public RefreshRoomChat(req: express.Request, res: express.Response): void {
-        //TODO: return list of of every message after the last one.
-        Room.findOne({ name: req.body.name }, "Messages", function (err, room) {
+        //TODO: return list of of every message
+        var messages: any;
+        Room.findOne({ name: req.body.name }, function (err, room) {
             if (err || room == null) {
                 return res.sendStatus(500).end();
             }
-            room.save(function (err) {
-                if (err) {
-                    return res.sendStatus(500).end();
-                }
-                else {
-                    return res.send({ fn: 'Messages retrieved', status: 'success' });
-                }
-            });
+            room.messages.forEach(msg => {
+                Chat.findOne({_id : msg},function (err: any, msg: null) {
+                    if (err || msg != null) {
+                        messages.push(msg);
+                    }
+                });
+        });
+        return res.send(JSON.stringify(messages))
         });
     }
 
