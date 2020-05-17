@@ -6,6 +6,7 @@ const Schema = mongoose.Schema;
 export interface Chat extends mongoose.Document{
     time: Date;
     content: string;
+    username: String;
 }
 
 const ChatSchema: mongoose.Schema = new Schema({
