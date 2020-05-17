@@ -107,34 +107,48 @@ export class MessageController {
     }
     public AcceptFriend(req: express.Request, res: express.Response): void {
         //TODO: add an entry in the friends table and ping Accounts to trigger refreshfriends
-        var Friendrequester = new Friends({ username: req.body.from });
         var Friendrequestee = new Friends({ username: req.body.to });
-        User.findOneAndUpdate({ username: req.body.to }, {$push: {friends:Friendrequester._id}} , function (err, user) {
+        User.findOneAndUpdate({ username: req.body.from }, { $push: { friends: Friendrequestee._id } }, function (err, user) {
             if (err || user == null) {
-                return;
+                return ;
             }
             user.save(function (err) {
                 if (err) {
-                    return;
+                    return ;
                 }
                 else {
-                    return;
+                    Friendrequestee.save(function (err) {
+                        if (err) {
+                            return ;
+                        }
+                        else {
+                            return ;
+                        }
+                    });
                 }
             });
         });
-        User.findOneAndUpdate({ username: req.body.from}, {$push:{friends:Friendrequestee._id}}, function (err, user) {
+        var Friendrequester = new Friends({ username: req.body.from });
+        User.findOneAndUpdate({ username: req.body.to }, { $push: { friends: Friendrequester._id } }, function (err, user) {
             if (err || user == null) {
-                return;
+                return ;
             }
             user.save(function (err) {
                 if (err) {
-                    return;
+                    return ;
                 }
                 else {
-                    return;
+                    Friendrequester.save(function (err) {
+                        if (err) {
+                            return ;
+                        }
+                        else {
+                            return ;
+                        }
+                    });
                 }
             });
-        }); 
+        });
         User.findOneAndUpdate({ username: req.body.from }, { $pull: { friendrequests: { username: req.body.to } } }, function (err, server) {
             if (err || server == null) {
                 return;
@@ -154,7 +168,7 @@ export class MessageController {
             }
             user.save(function (err) {
                 if (user) {
-                    return res.send({ fn: 'Joined Server', status: 'success' });
+                    return res.send({ fn: 'Joined Server', status: 'failed' });
                 }
                 else {
                     return res.send({ fn: 'Joined Server', status: 'success' });
@@ -164,19 +178,6 @@ export class MessageController {
     }
     public RemoveFriend(req: express.Request, res: express.Response): void {
         //TODO: remove an entry in the friends table and ping Accounts to trigger refreshfriends
-        User.findOneAndUpdate({ username: req.body.from }, { $pull: { friends: req.body.toId } }, function (err, server) {
-            if (err || server == null) {
-                return res.sendStatus(500).end();
-            }
-            server.save(function (err) {
-                if (err) {
-                    return res.sendStatus(500).end();
-                }
-                else {
-                    return res.send({ fn: 'Joined Server', status: 'success' });
-                }
-            });
-        });
         User.findOneAndUpdate({ username: req.body.to }, {$pull:{friends: req.body.fromId}}, function (err, server) {
             if (err || server == null) {
                 return;
@@ -190,6 +191,19 @@ export class MessageController {
                 }
             });
         }); 
+        User.findOneAndUpdate({ username: req.body.from }, { $pull: { friends: req.body.toId } }, function (err, server) {
+            if (err || server == null) {
+                return res.sendStatus(500).end();
+            }
+            server.save(function (err) {
+                if (err) {
+                    return res.sendStatus(500).end();
+                }
+                else {
+                    return res.send({ fn: 'Joined Server', status: 'success' });
+                }
+            });
+        });
     }
     public RefreshFriends(req: express.Request, res: express.Response): void {
         //TODO: return a list of all of a Accounts friends 

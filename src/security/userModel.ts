@@ -1,5 +1,4 @@
 import bcrypt from 'bcrypt';
-import {Friends} from '../messages/friendsModel';
 import mongoose = require("mongoose");
 
 
@@ -10,7 +9,7 @@ export interface IUser extends mongoose.Document {
     username: string;
     password:string;
     friendrequests: mongoose.Types.Array<string>;
-    friends: Friends['_id'];
+    friends: Array<mongoose.Types.ObjectId>;
     validatePassword(password: string): boolean;
     encryptString(password: string):string;
 }  

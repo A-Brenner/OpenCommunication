@@ -1,12 +1,11 @@
 import mongoose = require("mongoose");
-import {Chat} from './chatModel';
 
 const Schema = mongoose.Schema;
 
 
 export interface Friends extends mongoose.Document{
     username: string;
-    messages: Chat['_id'];
+    messages: Array<mongoose.Types.ObjectId>;
 }
 
 const FriendsSchema: mongoose.Schema = new Schema({
