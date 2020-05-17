@@ -10,20 +10,27 @@ export class MessageController {
 
     public SendFriendChat(req: express.Request, res: express.Response): void {
         //TODO: add a message to the PersonalMessage table and ping Accounts to trigger refreshfriendchat
-/*         User.findOne({ username: req.body.username }, function (err, messageDoc) {
-            if (err || messageDoc == null) {
+         Friends.findOne({ username: req.body.from }, function (err, friendDoc) {
+            if (err || friendDoc == null) {
                 return res.sendStatus(500).end();
             }
-            var message = new Chat({ time: Date.now , content: req.body.content});
+            var message = new Chat({ username: req.body.to, time: Date.now , content: req.body.content});
+            friendDoc.messages.add(message._id);
             message.save(function (err) {
                 if (err) {
                     return res.sendStatus(500).end();
                 }
                 else {
-                    return res.send({ fn: 'message sent', status: 'success' });
+                   friendDoc.save(function (err) {
+                    if (err) {
+                        return res.sendStatus(500).end();
+                    }
+                    else {
+                        return res.send({ fn: 'message sent', status: 'success' });
+                    }
                 }
             });
-        }); */
+        }); 
     }
     public RefreshFriendChat(req: express.Request, res: express.Response): void {
         //TODO: return list of of every message after the last one. 
