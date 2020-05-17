@@ -10,14 +10,12 @@ export interface Friends extends mongoose.Document{
 }
 
 const FriendsSchema: mongoose.Schema = new Schema({
-    friends: [{
-        username: {
-            type: String,
-            required: "username is required"
-        },
-        messages: [{
-            type: mongoose.Types.ObjectId
-        }]
+    username: {
+        type: String,
+        required: "username is required"
+    },
+    messages: [{
+        type: mongoose.Types.ObjectId
     }]
 });
 
