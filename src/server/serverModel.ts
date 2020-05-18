@@ -12,11 +12,6 @@ const ServerSchema: mongoose.Schema = new Schema({
     Name: {
         type: String,
     },
-    Rooms: [{
-        Id: {
-            type: mongoose.Types.ObjectId
-        }
-    }],
     Users: [{
         username: {
             type: String

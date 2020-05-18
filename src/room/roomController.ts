@@ -1,17 +1,33 @@
 import express from "express";
 import Room from "./roomModel";
+import Server from '../server/serverModel';
 import Chat from "../messages/chatModel"
 import mongoose = require("mongoose");
 export class RoomController {
     //TOTO: add an entry to the rooms table
     public CreateRoom(req: express.Request, res: express.Response): void {
-        let newRoom = new Room(req.body);
+        var newRoom = new Room({server: req.body.serverid,name: req.body.name, type: req.body.type});
+        var newRoomid = newRoom._id;
+        Server.findOneAndUpdate({ _id: req.body.serverid }, {$push:{ Rooms: newRoomid}}, function (err, server) {
+            if (err || server == null) {
+                return res.sendStatus(500).end();
+            }
+            server.save(function (err) {
+                if (err) {
+                    return res.sendStatus(500).end();
+                }
+                
+            });
+        });
         newRoom.save((err, room) => {
             if (err) {
                 res.send(err);
             }
-            res.json(room);
-        })
+            else {
+                return res.send({ fn: 'Added Room', status: 'success' });
+            }
+        });
+        
     }
 
     public SendRoomChat(req: express.Request, res: express.Response): void {

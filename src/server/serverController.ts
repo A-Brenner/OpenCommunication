@@ -9,7 +9,6 @@ export class ServerController {
         //TODO: create a entry in the server table
         var newServer = new Server({ Name: req.body.Name , Users: {username: req.body.username}});
         var generalroom = new Room({server: newServer._id, name: "General", type: "Chat"});
-        newServer.Rooms.push(generalroom._id);
         newServer.save((err, server) => {
             if(err){
                 res.send(err);
@@ -78,18 +77,8 @@ export class ServerController {
     }
     public RefreshRooms(req: express.Request, res: express.Response): void {
         //TODO: return a list of all users and rooms in a server
-        Server.findOne({ Name: <any>req.query.Name }, "Rooms",function (err, server) {
-            if (err || server == null) {
-                return res.sendStatus(500).end();
-            }
-            server.save(function (err) {
-                if (err) {
-                    return res.sendStatus(500).end();
-                }
-                else {
-                    return res.send({ fn: 'Friends List retrieved', status: 'success', server});
-                }
-            });
+        Room.find({server:<any>req.query.Name},function(err,rooms){
+            res.json(rooms);
         });
     }
     public ListServers(req: express.Request, res: express.Response): void {
