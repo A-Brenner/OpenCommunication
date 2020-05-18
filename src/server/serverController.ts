@@ -93,13 +93,9 @@ export class ServerController {
         });
     }
     public ListServers(req: express.Request, res: express.Response): void {
-        Server.find(function(err, servers){
+        Server.find({"Users.username" : req.body.user} ,function(err, servers){
             if (err || servers == null) {
                 return res.sendStatus(500).end();
-            }
-            var userservers : Array<typeof Server> = [];
-            for(var i = 0; i < servers.length ; i++){
-                userservers.push(userservers[i]);
             }
             return res.send(JSON.stringify(servers));
         });
