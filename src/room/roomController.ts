@@ -61,7 +61,7 @@ export class RoomController {
         //TODO: return list of of every message
         var messages : any[]= [];
         var _room : any;
-        Room.findOne({ _id: req.body.roomid }, function (err, room) {
+        Room.findOne({ _id: req.query.roomid }, function (err, room) {
             if (err || room == null) {
                 return res.sendStatus(500).end();
             }
@@ -70,10 +70,10 @@ export class RoomController {
             if (_room.messages.length != 0) {
                 for (var i = 0; i < _room.messages.length; i++) {
                     await Chat.findOne({ _id: _room.messages[i] }, function (err, msg) {
-                        if (err || msg == null) {
-                            return res.sendStatus(500).end();
-                        }
-                        messages.push(msg);       
+                        if (!err && msg != null) {
+                    
+                        messages.push(msg); 
+                        }      
                     }      
                     );
                 }  
