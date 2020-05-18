@@ -62,7 +62,7 @@ export class ServerController {
     }
     public RefreshUsers(req: express.Request, res: express.Response): void {
         //TODO: return a list of all users and rooms in a server
-        Server.findOne({ Name: req.body.Name }, "Users",function (err, server) {
+        Server.findOne({ Name: <any>req.query.Name }, "Users",function (err, server) {
             if (err || server == null) {
                 return res.sendStatus(500).end();
             }
@@ -78,7 +78,7 @@ export class ServerController {
     }
     public RefreshRooms(req: express.Request, res: express.Response): void {
         //TODO: return a list of all users and rooms in a server
-        Server.findOne({ Name: req.body.Name }, "Rooms",function (err, server) {
+        Server.findOne({ Name: <any>req.query.Name }, "Rooms",function (err, server) {
             if (err || server == null) {
                 return res.sendStatus(500).end();
             }
@@ -93,7 +93,7 @@ export class ServerController {
         });
     }
     public ListServers(req: express.Request, res: express.Response): void {
-        Server.find({"Users.username" : req.body.user} ,function(err, servers){
+        Server.find({"Users.username" : req.query.user} ,function(err, servers){
             if (err || servers == null) {
                 return res.sendStatus(500).end();
             }
