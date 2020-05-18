@@ -58,19 +58,6 @@ export class MessageController {
     }
     public AddFriend(req: express.Request, res: express.Response): void {
         //TODO: add an entry in the friends table and ping Accounts to trigger refreshfriends
-        User.findOneAndUpdate({ username: req.body.from }, { $push: { friendrequests: { username: req.body.to } } }, function (err, server) {
-            if (err || server == null) {
-                return;
-            }
-            server.save(function (err) {
-                if (err) {
-                    return;
-                }
-                else {
-                    return;
-                }
-            });
-        });
         User.findOneAndUpdate({ username: req.body.to }, { $push: { friendrequests: { username: req.body.from } } }, function (err, server) {
             if (err || server == null) {
                 return res.sendStatus(500).end();
@@ -96,19 +83,6 @@ export class MessageController {
                 }
                 else {
                     return;
-                }
-            });
-        });
-        User.findOneAndUpdate({ username: req.body.from }, { $pull: { friendrequests: { username: req.body.to } } }, function (err, server) {
-            if (err || server == null) {
-                return res.sendStatus(500).end();
-            }
-            server.save(function (err) {
-                if (err) {
-                    return res.sendStatus(500).end();
-                }
-                else {
-                    return res.send({ fn: 'Joined Server', status: 'success' });
                 }
             });
         });
@@ -157,7 +131,7 @@ export class MessageController {
                 }
             });
         });
-        User.findOneAndUpdate({ username: req.body.from }, { $pull: { friendrequests: { username: req.body.to } } }, function (err, server) {
+        User.findOneAndUpdate({ username: req.body.to }, { $pull: { friendrequests: { username: req.body.from } } }, function (err, server) {
             if (err || server == null) {
                 return;
             }
@@ -167,19 +141,6 @@ export class MessageController {
                 }
                 else {
                     return;
-                }
-            });
-        });
-        User.findOneAndUpdate({ username: req.body.to }, { $pull: { friendrequests: { username: req.body.from } } }, function (err, user) {
-            if (err || user == null) {
-                return ;
-            }
-            user.save(function (err) {
-                if (user) {
-                    return res.send({ fn: 'Joined Server', status: 'failed' });
-                }
-                else {
-                    return res.send({ fn: 'Joined Server', status: 'success' });
                 }
             });
         });
