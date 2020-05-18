@@ -10,9 +10,9 @@ export class RoomRouter extends AppRouter{
     //sets up the routes within this module shows an example of a route that requires authorization, and one that does not
     setupRoutes(): void {      
         const roomController: RoomController=new RoomController();
-        this.router.post("/create", roomController.CreateRoom);
-        this.router.post("/sendchat", roomController.SendRoomChat);
-        this.router.get("/refreshchat", roomController.RefreshRoomChat);
+        this.router.post("/create", [SecurityMiddleware.RequireAuth],roomController.CreateRoom);
+        this.router.post("/sendchat", [SecurityMiddleware.RequireAuth],roomController.SendRoomChat);
+        this.router.get("/refreshchat", [SecurityMiddleware.RequireAuth],roomController.RefreshRoomChat);
         this.router.post("/joinvoice", [SecurityMiddleware.RequireAuth],roomController.JoinRoomVoice);
         this.router.get("/refreshvoice", [SecurityMiddleware.RequireAuth],roomController.RefreshRoomVoice);
         this.router.post("/joinvideo", [SecurityMiddleware.RequireAuth],roomController.JoinRoomVideo);
