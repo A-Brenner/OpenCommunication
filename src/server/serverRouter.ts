@@ -10,11 +10,11 @@ export class serverRouter extends AppRouter{
     //sets up the routes within this module shows an example of a route that requires authorization, and one that does not
     setupRoutes(): void {      
         const serverController: ServerController= new ServerController();
-        this.router.post("/create",serverController.CreateServer);
-        this.router.post("/join", serverController.JoinServer);
-        this.router.delete("/leave", serverController.LeaveServer);
-        this.router.get("/refreshusers",serverController.RefreshUsers);
-        this.router.get("/refreshrooms",serverController.RefreshRooms);
-        this.router.get("/list",serverController.ListServers);
+        this.router.post("/create",[SecurityMiddleware.RequireAuth],serverController.CreateServer);
+        this.router.post("/join", [SecurityMiddleware.RequireAuth],serverController.JoinServer);
+        this.router.delete("/leave",[SecurityMiddleware.RequireAuth], serverController.LeaveServer);
+        this.router.get("/refreshusers",[SecurityMiddleware.RequireAuth],serverController.RefreshUsers);
+        this.router.get("/refreshrooms",[SecurityMiddleware.RequireAuth],serverController.RefreshRooms);
+        this.router.get("/list",[SecurityMiddleware.RequireAuth],serverController.ListServers);
     }    
 }
