@@ -176,7 +176,7 @@ export class MessageController {
     }
     public RefreshFriends(req: express.Request, res: express.Response): void {
         //TODO: return a list of all of a Accounts friends 
-        User.find({username:<any>req.query.username},"friendrequests",function(err,friends){
+        User.findOne({username:<any>req.query.username},"friendrequests",function(err,friends){
             res.json(friends);
         }); 
     }
