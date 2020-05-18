@@ -176,18 +176,8 @@ export class MessageController {
     }
     public RefreshFriends(req: express.Request, res: express.Response): void {
         //TODO: return a list of all of a Accounts friends 
-        User.findOne({ username: req.body.username }, "friends",function (err, friends) {
-            if (err || friends == null) {
-                return res.sendStatus(500).end();
-            }
-            friends.save(function (err) {
-                if (err) {
-                    return res.sendStatus(500).end();
-                }
-                else {
-                    return res.send({ fn: 'Friends List retrieved', status: 'success', friends});
-                }
-            });
+        User.find({username:<any>req.query.username},"friendrequests",function(err,friends){
+            res.json(friends);
         }); 
     }
     public RequestPhotos(req: express.Request, res: express.Response): void {
