@@ -93,13 +93,15 @@ export class ServerController {
         });
     }
     public ListServers(req: express.Request, res: express.Response): void {
-        Server.find({ Users : req.body.userid},function(err, servers){
+        Server.find(function(err, servers){
             if (err || servers == null) {
                 return res.sendStatus(500).end();
             }
-            else{
-                return res.send(JSON.stringify(servers));
+            var userservers : Array<typeof Server> = [];
+            for(var i = 0; i < servers.length ; i++){
+                userservers.push(userservers[i]);
             }
+            return res.send(JSON.stringify(servers));
         });
     }
 }
